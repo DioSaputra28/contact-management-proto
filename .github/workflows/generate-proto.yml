@@ -11,6 +11,10 @@ on:
       - 'proto/**/*.proto'
   workflow_dispatch:
 
+# Grant write permissions to allow pushing commits
+permissions:
+  contents: write
+
 jobs:
   generate:
     runs-on: ubuntu-latest
@@ -56,8 +60,8 @@ jobs:
       - name: Commit and push generated code
         if: steps.verify-changed-files.outputs.changed == 'true' && github.event_name == 'push'
         run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add protogen/
           git commit -m "chore: auto-generate proto code [skip ci]"
           git push
