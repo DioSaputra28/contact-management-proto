@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package auth;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/DioSaputra28/contact-management-proto/protogen/go/auth";
+
+message User {
+    int32 user_id = 1 [json_name = "user_id"];
+    string name = 2 [json_name = "name"];
+    string email = 3 [json_name = "email"];
+    google.protobuf.Timestamp created_at = 4 [json_name = "created_at"];
+}
+
+message LoginRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message LoginResponse {
+    string token = 1;
+    User user = 2;
+}
+
+message RegisterRequest {
+    string name = 1;
+    string email = 2;
+    string password = 3;
+}
+
+message RegisterResponse {
+    string token = 1;
+    User user = 2;
+}
+
+service AuthService {
+    rpc Login (LoginRequest) returns (LoginResponse);
+    rpc Register (RegisterRequest) returns (RegisterResponse);
+}

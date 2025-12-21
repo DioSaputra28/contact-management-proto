@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package user;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/DioSaputra28/contact-management-proto/protogen/go/user";
+
+message User {
+    int32 user_id = 1 [json_name = "user_id"];
+    string name = 2 [json_name = "name"];
+    string email = 3 [json_name = "email"];
+    google.protobuf.Timestamp created_at = 4 [json_name = "created_at"];
+}
+
+message GetUserByIdRequest {
+    int32 user_id = 1 [json_name = "user_id"];
+}
+
+message GetUserByIdResponse {
+    User user = 1 [json_name = "user"];
+}
+
+message GetUsersRequest {
+    int32 page = 1 [json_name = "page"];
+    int32 limit = 2 [json_name = "limit"];
+    optional string search = 3 [json_name = "search"];
+}
+
+message GetUsersResponse {
+    repeated User users = 1 [json_name = "users"];
+    int32 total_data = 2 [json_name = "total_data"];
+    int32 current_page = 3 [json_name = "current_page"];
+    int32 page_size = 4 [json_name = "page_size"];
+    int32 total_page = 5 [json_name = "total_page"];
+}
+
+message CreateUserRequest {
+    string name = 1;
+    string email = 2;
+    string password = 3;
+}
+
+message CreateUserResponse {
+    User user = 1;
+}
+
+message UpdateUserRequest {
+    int32 user_id = 1 [json_name = "user_id"];
+    optional string name = 2 [json_name = "name"];
+    optional string email = 3 [json_name = "email"];
+    optional string password = 4 [json_name = "password"];
+}
+
+message UpdateUserResponse {
+    User user = 1;
+}
+
+message DeleteUserRequest {
+    int32 user_id = 1 [json_name = "user_id"];
+}
+
+message DeleteUserResponse {
+    User user = 1;
+}
+
+service UserService {
+    rpc GetUserById (GetUserByIdRequest) returns (GetUserByIdResponse);
+    rpc GetUsers (GetUsersRequest) returns (GetUsersResponse);
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+    rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+    rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
+}

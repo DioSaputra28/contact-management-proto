@@ -1,0 +1,166 @@
+syntax = "proto3";
+
+package contact;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/DioSaputra28/contact-management-proto/protogen/go/contact";
+
+message Contact {
+    int32 contact_id = 1 [json_name = "contact_id"];
+    int32 user_id = 2 [json_name = "user_id"];
+    string first_name = 3 [json_name = "first_name"];
+    optional string last_name = 4 [json_name = "last_name"];
+    string email = 5 [json_name = "email"];
+    optional string phone = 6 [json_name = "phone"];
+    google.protobuf.Timestamp created_at = 7 [json_name = "created_at"];
+}
+
+message Address {
+    int32 address_id = 1 [json_name = "address_id"];
+    int32 contact_id = 2 [json_name = "contact_id"];
+    optional string street = 3 [json_name = "street"];
+    optional string city = 4 [json_name = "city"];
+    optional string state = 5 [json_name = "state"];
+    optional string zip_code = 6 [json_name = "zip_code"];
+    string country = 7 [json_name = "country"];
+    google.protobuf.Timestamp created_at = 8 [json_name = "created_at"];
+}
+
+// ========== Contact Operations ==========
+
+message GetContactByIdRequest {
+    int32 user_id = 1 [json_name = "user_id"];
+    int32 contact_id = 2 [json_name = "contact_id"];
+}
+
+message GetContactByIdResponse {
+    Contact contact = 1 [json_name = "contact"];
+}
+
+message GetContactsRequest {
+    int32 user_id = 1 [json_name = "user_id"];
+    int32 page = 2 [json_name = "page"];
+    int32 limit = 3 [json_name = "limit"];
+    optional string search = 4 [json_name = "search"];
+}
+
+message GetContactsResponse {
+    repeated Contact contacts = 1 [json_name = "contacts"];
+    int32 total_data = 2 [json_name = "total_data"];
+    int32 current_page = 3 [json_name = "current_page"];
+    int32 page_size = 4 [json_name = "page_size"];
+    int32 total_page = 5 [json_name = "total_page"];
+}
+
+message CreateContactRequest {
+    int32 user_id = 1 [json_name = "user_id"];
+    string first_name = 2 [json_name = "first_name"];
+    optional string last_name = 3 [json_name = "last_name"];
+    string email = 4 [json_name = "email"];
+    optional string phone = 5 [json_name = "phone"];
+}
+
+message CreateContactResponse {
+    Contact contact = 1 [json_name = "contact"];
+}
+
+message UpdateContactRequest {
+    int32 user_id = 1 [json_name = "user_id"];
+    int32 contact_id = 2 [json_name = "contact_id"];
+    optional string first_name = 3 [json_name = "first_name"];
+    optional string last_name = 4 [json_name = "last_name"];
+    optional string email = 5 [json_name = "email"];
+    optional string phone = 6 [json_name = "phone"];
+}
+
+message UpdateContactResponse {
+    Contact contact = 1 [json_name = "contact"];
+}
+
+message DeleteContactRequest {
+    int32 user_id = 1 [json_name = "user_id"];
+    int32 contact_id = 2 [json_name = "contact_id"];
+}
+
+message DeleteContactResponse {
+    Contact contact = 1 [json_name = "contact"];
+}
+
+// ========== Address Operations ==========
+
+message GetAddressByIdRequest {
+    int32 contact_id = 1 [json_name = "contact_id"];
+    int32 address_id = 2 [json_name = "address_id"];
+}
+
+message GetAddressByIdResponse {
+    Address address = 1 [json_name = "address"];
+}
+
+message GetAddressesRequest {
+    int32 contact_id = 1 [json_name = "contact_id"];
+    int32 page = 2 [json_name = "page"];
+    int32 limit = 3 [json_name = "limit"];
+    optional string search = 4 [json_name = "search"];
+}
+
+message GetAddressesResponse {
+    repeated Address addresses = 1 [json_name = "addresses"];
+    int32 total_data = 2 [json_name = "total_data"];
+    int32 current_page = 3 [json_name = "current_page"];
+    int32 page_size = 4 [json_name = "page_size"];
+    int32 total_page = 5 [json_name = "total_page"];
+}
+
+message CreateAddressRequest {
+    int32 contact_id = 1 [json_name = "contact_id"];
+    string street = 2 [json_name = "street"];
+    string city = 3 [json_name = "city"];
+    string state = 4 [json_name = "state"];
+    string zip_code = 5 [json_name = "zip_code"];
+    string country = 6 [json_name = "country"];
+}
+
+message CreateAddressResponse {
+    Address address = 1 [json_name = "address"];
+}
+
+message UpdateAddressRequest {
+    int32 contact_id = 1 [json_name = "contact_id"];
+    int32 address_id = 2 [json_name = "address_id"];
+    optional string street = 3 [json_name = "street"];
+    optional string city = 4 [json_name = "city"];
+    optional string state = 5 [json_name = "state"];
+    optional string zip_code = 6 [json_name = "zip_code"];
+    optional string country = 7 [json_name = "country"];
+}
+
+message UpdateAddressResponse {
+    Address address = 1 [json_name = "address"];
+}
+
+message DeleteAddressRequest {
+    int32 contact_id = 1 [json_name = "contact_id"];
+    int32 address_id = 2 [json_name = "address_id"];
+}
+
+message DeleteAddressResponse {
+    Address address = 1 [json_name = "address"];
+}
+
+service ContactService {
+    // Contact operations
+    rpc GetContactById(GetContactByIdRequest) returns (GetContactByIdResponse);
+    rpc GetContacts(GetContactsRequest) returns (GetContactsResponse);
+    rpc CreateContact(CreateContactRequest) returns (CreateContactResponse);
+    rpc UpdateContact(UpdateContactRequest) returns (UpdateContactResponse);
+    rpc DeleteContact(DeleteContactRequest) returns (DeleteContactResponse);
+    
+    // Address operations
+    rpc GetAddressById(GetAddressByIdRequest) returns (GetAddressByIdResponse);
+    rpc GetAddresses(GetAddressesRequest) returns (GetAddressesResponse);
+    rpc CreateAddress(CreateAddressRequest) returns (CreateAddressResponse);
+    rpc UpdateAddress(UpdateAddressRequest) returns (UpdateAddressResponse);
+    rpc DeleteAddress(DeleteAddressRequest) returns (DeleteAddressResponse);
+}
