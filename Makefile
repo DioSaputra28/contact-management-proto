@@ -57,3 +57,13 @@ verify:
 		--descriptor_set_out=/dev/null \
 		$(PROTO_FILES)
 	@echo "${GREEN}✓ All proto files are valid${NC}"
+
+## pipeline-init: Install tools for CI/CD pipeline
+pipeline-init:
+	@echo "${YELLOW}📦 Installing protoc plugins for pipeline...${NC}"
+	@go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+	@go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+	@echo "${GREEN}✓ Pipeline tools installed${NC}"
+
+## pipeline-build: Build for CI/CD pipeline
+pipeline-build: pipeline-init clean generate

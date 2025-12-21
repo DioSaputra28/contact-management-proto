@@ -1,0 +1,39 @@
+name: Pull Request - Check Protobuf - Go
+
+on:
+  pull_request:
+    paths:
+      - "proto/**/*.proto"
+
+jobs:
+  generate-protobuf-go:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Install Go Runtime
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.21.x"
+          check-latest: false
+          cache: true
+
+      - name: Install protoc
+        run: |
+          PROTOC_VERSION=25.1
+          curl -LO "https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip"
+          unzip protoc-${PROTOC_VERSION}-linux-x86_64.zip -d $HOME/.local
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Verify proto files
+        shell: bash
+        run: |
+          make verify
+
+      - name: Generate Go Source
+        shell: bash
+        run: |
+          make pipeline-build
