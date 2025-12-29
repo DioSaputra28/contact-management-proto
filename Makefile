@@ -37,8 +37,10 @@ generate:
 	@protoc \
 		--go_out=. \
 		--go_opt=module=github.com/DioSaputra28/contact-management-proto \
+		--go_opt=Mproto/auth/auth.proto=github.com/DioSaputra28/contact-management-proto/protogen/go/auth \
 		--go-grpc_out=. \
 		--go-grpc_opt=module=github.com/DioSaputra28/contact-management-proto \
+		--go-grpc_opt=Mproto/auth/auth.proto=github.com/DioSaputra28/contact-management-proto/protogen/go/auth \
 		--proto_path=. \
 		$(PROTO_FILES)
 	@echo "${GREEN}✓ Code generation complete${NC}"
